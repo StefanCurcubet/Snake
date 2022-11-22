@@ -38,6 +38,80 @@ for (let i = 0; i <= 14; ++i) {
 document.getElementById(snake[0]).setAttribute("class", "activeCell")
 document.getElementById(snake[snake.length - 1]).setAttribute("class", "activeCell")
 
+function setFruit(gMode) {
+    if (gMode == 1) {
+        fruitRow = Math.floor(Math.random() * 8)
+        fruitCol = Math.floor(Math.random() * 8)
+        if (document.getElementById("" + fruitRow + "c" + fruitCol +"").className == "cell") {
+            playGrid[fruitRow][fruitCol] = 1
+            document.getElementById("" + fruitRow + "c" + fruitCol +"").innerHTML ='\
+            <img src="mushroom.png" id="fruit">'
+        } else {
+            setFruit(gMode)
+        }
+    }
+    if (gMode == 2) {
+        if (fruitNeeded == 0) {
+            return
+        }
+        fruitRow = Math.floor(Math.random() * 8)
+        fruitCol = Math.floor(Math.random() * 8)
+        if (document.getElementById("" + fruitRow + "c" + fruitCol +"").className == "cell") {
+            if (fruitNeeded == 2) {
+                playGrid[fruitRow][fruitCol] = 1 
+            } else if (fruitNeeded == 1) {
+                playGrid[fruitRow][fruitCol] = 2
+                posBadshr[0] = fruitRow
+                posBadshr[1] = fruitCol
+            }
+            --fruitNeeded
+            document.getElementById("" + fruitRow + "c" + fruitCol +"").innerHTML ='\
+            <img src="mushroom.png" id="fruit">'
+        }
+        if (fruitNeeded != 0) {
+            setFruit(gMode)
+        }
+    }
+}
+
+window.addEventListener("keydown", (event) => {
+    event.preventDefault()
+    if (cardinalDir.includes(event.code) && dirAllowed(event.code)) {
+        direction = event.code
+    } 
+    if (event.code == "Enter") {
+        startGame()
+    }
+    if (event.code == "Space") {
+        gameReset()
+    }
+})
+
+function dirAllowed(inputDir) {
+    if (headOrientation == "ArrowUp" && inputDir == "ArrowDown") {
+        return false
+    }
+    if (headOrientation == "ArrowDown" && inputDir == "ArrowUp") {
+        return false
+    }
+    if (headOrientation == "ArrowRight" && inputDir == "ArrowLeft") {
+        return false
+    }
+    if (headOrientation == "ArrowLeft" && inputDir == "ArrowRight") {
+        return false
+    }
+    return true
+}
+
+function startGame() {
+    if (gameState == 0) {
+        gameState = 1
+        document.getElementById("gameInfo").innerText = ""
+        setFruit(gMode)
+        moveTo()
+    }  
+}
+
 function moveTo() {
     if (direction === "ArrowRight") {
         headOrientation = "ArrowRight"
@@ -89,95 +163,17 @@ function moveTo() {
     setTimeout(moveTo, speed)
 }
 
-
-function setFruit(gMode) {
-    if (gMode == 1) {
-        fruitRow = Math.floor(Math.random() * 8)
-        fruitCol = Math.floor(Math.random() * 8)
-        if (document.getElementById("" + fruitRow + "c" + fruitCol +"").className == "cell") {
-            playGrid[fruitRow][fruitCol] = 1
-            document.getElementById("" + fruitRow + "c" + fruitCol +"").innerHTML ='\
-            <img src="mushroom.png" id="fruit">'
-        } else {
-            setFruit(gMode)
-        }
+function checkCollision() {
+    if (posHeadRow < 0 || posHeadRow > 14) {
+        return true
     }
-    if (gMode == 2) {
-        if (fruitNeeded == 0) {
-            return
-        }
-        fruitRow = Math.floor(Math.random() * 8)
-        fruitCol = Math.floor(Math.random() * 8)
-        if (document.getElementById("" + fruitRow + "c" + fruitCol +"").className == "cell") {
-            if (fruitNeeded == 2) {
-                playGrid[fruitRow][fruitCol] = 1
-                console.log("" + fruitRow + "c" + fruitCol +"")  
-            } else if (fruitNeeded == 1) {
-                playGrid[fruitRow][fruitCol] = 2
-                posBadshr[0] = fruitRow
-                posBadshr[1] = fruitCol
-            }
-            --fruitNeeded
-            document.getElementById("" + fruitRow + "c" + fruitCol +"").innerHTML ='\
-            <img src="mushroom.png" id="fruit">'
-        }
-        if (fruitNeeded != 0) {
-            setFruit(gMode)
-        }
+    if (posHeadCol < 0 || posHeadCol > 14) {
+        return true
     }
-    console.log(playGrid)
-}
-
-function startGame() {
-    if (gameState == 0) {
-        gameState = 1
-        document.getElementById("gameInfo").innerText = ""
-        setFruit(gMode)
-        moveTo()
-    }  
-}
-
-window.addEventListener("keydown", (event) => {
-    event.preventDefault()
-    if (cardinalDir.includes(event.code) && dirAllowed(event.code)) {
-        direction = event.code
-    } 
-    if (event.code == "Enter") {
-        startGame()
+    if (snake.includes("" + posHeadRow +"c"+ posHeadCol)) {
+        return true
     }
-    if (event.code == "Space") {
-        gameReset()
-    }
-})
-
-function dirAllowed(inputDir) {
-    if (headOrientation == "ArrowUp" && inputDir == "ArrowDown") {
-        return false
-    }
-    if (headOrientation == "ArrowDown" && inputDir == "ArrowUp") {
-        return false
-    }
-    if (headOrientation == "ArrowRight" && inputDir == "ArrowLeft") {
-        return false
-    }
-    if (headOrientation == "ArrowLeft" && inputDir == "ArrowRight") {
-        return false
-    }
-    return true
-}
-
-function gameLost() {
-    gameState = 2
-    document.getElementById("gameInfo").setAttribute("class", "gameLost")
-    document.getElementById("gameInfo").style.color = "black"
-    document.getElementById("gameInfo").innerHTML = "GAME OVER"
-    setTimeout(displayReset, 2000)
-}
-
-function gameReset() {
-    if (gameState == 3) {
-    window.location.reload()
-    }
+    return false
 }
 
 function ateFruit() {
@@ -200,6 +196,13 @@ function ateFruit() {
     return false
 }
 
+function clearBadshroom() {
+    if (gMode == 2) {
+        document.getElementById("" + posBadshr[0] +"c"+ posBadshr[1]).innerHTML = ""
+        playGrid[posBadshr[0]][posBadshr[1]] = 0
+    }
+}
+
 function updateScore() {
     score += 100
     document.getElementById("scoreWindow").innerText = score
@@ -215,6 +218,27 @@ function increaseSpeed() {
         blinkColor()
     } 
     speed -= 50
+}
+
+function gameLost() {
+    gameState = 2
+    document.getElementById("gameInfo").setAttribute("class", "gameLost")
+    document.getElementById("gameInfo").style.color = "black"
+    document.getElementById("gameInfo").innerHTML = "GAME OVER"
+    setTimeout(displayReset, 2000)
+}
+
+function gameReset() {
+    if (gameState == 3) {
+    window.location.reload()
+    }
+}
+
+function displayReset() {
+    gameState = 3
+    document.getElementById("gameInfo").setAttribute("class", "tryAgain")
+    document.getElementById("gameInfo").innerText = "Press Space to try again"
+    blinkColor()
 }
 
 function blinkColor() {
@@ -233,26 +257,6 @@ function blinkColor() {
         } 
         setTimeout(blinkColor, 500)   
     }
-}
-
-function checkCollision() {
-    if (posHeadRow < 0 || posHeadRow > 14) {
-        return true
-    }
-    if (posHeadCol < 0 || posHeadCol > 14) {
-        return true
-    }
-    if (snake.includes("" + posHeadRow +"c"+ posHeadCol)) {
-        return true
-    }
-    return false
-}
-
-function displayReset() {
-    gameState = 3
-    document.getElementById("gameInfo").setAttribute("class", "tryAgain")
-    document.getElementById("gameInfo").innerText = "Press Space to try again"
-    blinkColor()
 }
 
 function setGmode1() {
@@ -284,11 +288,4 @@ function setGmode2() {
     gameState = 0
     document.getElementById("gameInfo").setAttribute("class", "gameStart")
     document.getElementById("gameInfo").innerText = "Press Enter to start"
-}
-
-function clearBadshroom() {
-    if (gMode == 2) {
-        document.getElementById("" + posBadshr[0] +"c"+ posBadshr[1]).innerHTML = ""
-        playGrid[posBadshr[0]][posBadshr[1]] = 0
-    }
 }
