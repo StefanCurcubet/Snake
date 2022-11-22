@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <link rel="stylesheet" href="snake.css">
+    <title>Snake</title>
+  </head>
+  <body>
+    <div class="grid-container" id="minefield">
+      <div class="infoArea" id="infoArea">
+          <div class="displayBox" id="scoreWindow">0</div>
+          <div class="score">Score</div>
+          <div class="chooseMode" id="gameInfo">Choose Game Mode</div>
+        </div>
+      </div>
+    </div>
+    <div class="gameMode" id="gameMode">
+      <button class="gMode1" onclick="setGmode1()">Classic</button>
+      <button class="gMode2" onclick="setGmode2()">Poison Mushroom</button>
+    </div>
+    <div class="modeInfo" id="modeInfo">
+    </div>
+    <script src="scriptsnake.js"></script>
+  </body>

@@ -1,0 +1,108 @@
+.grid-container {
+    display: grid;
+    width: 300px;
+    margin: 50px;
+    padding: 5px;
+    grid-template-columns: repeat(15, 20px);
+    grid-template-rows: 40px repeat(15, 20px);
+    ;
+    align-content: center;
+    row-gap: 0px;
+    column-gap:0px;
+    border-style: solid;
+    border-color: black;
+    border-radius: 5px;
+    background-color: rgb(220, 220, 220);
+}
+
+.infoArea {
+    display: flex;
+    grid-column: 1 / -1;
+    background-color: rgb(220, 220, 220);
+    font-size: 12px;
+    border-style:ridge;
+}
+
+.displayBox {
+    height: 19px;
+    width: 44px;
+    background-color: whitesmoke;
+    text-align: center;
+    font-size: 18px;
+    border-style: solid;
+    border-width: 2px;
+    margin-top: 5px;
+    margin-left: 5px;
+}
+
+.score {
+    font-size: 20px;
+    margin-top: 6px;
+    margin-left: 5px;
+}
+
+.gameMaxspeed {
+    font-size: 30px;
+    font-style: italic;
+    margin-left: 27px;
+}
+
+.gameLost {
+    font-Style: normal;
+    font-Size : 27px;
+    margin-left: 20px;
+    margin-top: 2px;
+}
+
+.tryAgain {
+    font-Style: normal;
+    font-Size: 18px;
+    margin-left: 12px;
+    margin-top: 7px;
+}
+
+.gameStart {
+    font-Style: normal;
+    font-Size: 22px;
+    margin-left: 12px;
+    margin-top: 5px;
+}
+
+.chooseMode {
+    font-Style: normal;
+    font-Size: 21px;
+    margin-left: 12px;
+    margin-top: 6px;
+}
+
+.cell {
+    background-color:  rgb(220, 220, 220);
+}
+
+.activeCell {
+    background-color: rgb(107, 164, 50);
+    border-style: groove;
+}
+
+.gameMode {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    flex-wrap: wrap;
+    margin-left: 112px;
+}
+
+.gMode1 {
+    margin-top: 2px;
+    margin-left: 5px;
+}
+
+.gMode2 {
+    margin-top: 2px;
+    margin-left: 5px;
+}
+
+p {
+    margin-left: 50px;
+}
