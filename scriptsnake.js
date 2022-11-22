@@ -110,8 +110,7 @@ function setFruit(gMode) {
         fruitCol = Math.floor(Math.random() * 8)
         if (document.getElementById("" + fruitRow + "c" + fruitCol +"").className == "cell") {
             if (fruitNeeded == 2) {
-                playGrid[fruitRow][fruitCol] = 1
-                console.log("" + fruitRow + "c" + fruitCol +"")  
+                playGrid[fruitRow][fruitCol] = 1  
             } else if (fruitNeeded == 1) {
                 playGrid[fruitRow][fruitCol] = 2
                 posBadshr[0] = fruitRow
@@ -125,7 +124,6 @@ function setFruit(gMode) {
             setFruit(gMode)
         }
     }
-    console.log(playGrid)
 }
 
 function startGame() {
