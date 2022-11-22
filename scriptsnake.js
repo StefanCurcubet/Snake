@@ -110,7 +110,8 @@ function setFruit(gMode) {
         fruitCol = Math.floor(Math.random() * 8)
         if (document.getElementById("" + fruitRow + "c" + fruitCol +"").className == "cell") {
             if (fruitNeeded == 2) {
-                playGrid[fruitRow][fruitCol] = 1  
+                playGrid[fruitRow][fruitCol] = 1
+                console.log("" + fruitRow + "c" + fruitCol +"")  
             } else if (fruitNeeded == 1) {
                 playGrid[fruitRow][fruitCol] = 2
                 posBadshr[0] = fruitRow
@@ -124,6 +125,7 @@ function setFruit(gMode) {
             setFruit(gMode)
         }
     }
+    console.log(playGrid)
 }
 
 function startGame() {
@@ -204,10 +206,10 @@ function updateScore() {
 }
 
 function increaseSpeed() {
-    if (speed < 200) {
+    if (speed < 150) {
         return
     }
-    if (speed == 200) {
+    if (speed == 150) {
         document.getElementById("gameInfo").setAttribute("class", "gameMaxspeed")
         document.getElementById("gameInfo").innerText = "MAX SPEED"
         blinkColor()
