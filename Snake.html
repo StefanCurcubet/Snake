@@ -5,19 +5,18 @@
     <title>Snake</title>
   </head>
   <body>
-    <div class="grid-container" id="minefield">
+    <div class="grid-container" id="cellfield">
       <div class="infoArea" id="infoArea">
-          <div class="displayBox" id="scoreWindow">0</div>
-          <div class="score">Score</div>
-          <div class="chooseMode" id="gameInfo">Choose Game Mode</div>
-        </div>
+        <div class="displayBox" id="scoreWindow">0</div>
+        <div class="score">Score</div>
+        <div class="chooseMode" id="gameInfo">Choose Game Mode</div>
       </div>
     </div>
     <div class="gameMode" id="gameMode">
-      <button class="gMode1" onclick="setGmode1()">Classic</button>
-      <button class="gMode2" onclick="setGmode2()">Poison Mushroom</button>
+      <button class="gMode" id="gM1" onclick="setGmode(id)">Classic</button>
+      <button class="gMode" id="gM2" onclick="setGmode(id)">Poison Mushroom</button>
     </div>
-    <div class="modeInfo" id="modeInfo">
-    </div>
+    <div class="modeInfo" id="modeInfo"></div>
     <script src="scriptsnake.js"></script>
   </body>
+</html>

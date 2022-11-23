@@ -29,7 +29,7 @@ const playGrid =
 
 for (let i = 0; i <= 14; ++i) {
     for (let j = 0; j <= 14; ++j) {
-        document.getElementById("minefield").innerHTML += '\
+        document.getElementById("cellfield").innerHTML += '\
         <div class="cell" id="' + i + 'c'+ j +'">\
         </div>'
     }
@@ -38,24 +38,19 @@ for (let i = 0; i <= 14; ++i) {
 document.getElementById(snake[0]).setAttribute("class", "activeCell")
 document.getElementById(snake[snake.length - 1]).setAttribute("class", "activeCell")
 
-function setFruit(gMode) {
+function setFruit() {
+    fruitRow = Math.floor(Math.random() * 8)
+    fruitCol = Math.floor(Math.random() * 8)
     if (gMode == 1) {
-        fruitRow = Math.floor(Math.random() * 8)
-        fruitCol = Math.floor(Math.random() * 8)
         if (document.getElementById("" + fruitRow + "c" + fruitCol +"").className == "cell") {
             playGrid[fruitRow][fruitCol] = 1
             document.getElementById("" + fruitRow + "c" + fruitCol +"").innerHTML ='\
             <img src="mushroom.png" id="fruit">'
         } else {
-            setFruit(gMode)
+            setFruit()
         }
     }
     if (gMode == 2) {
-        if (fruitNeeded == 0) {
-            return
-        }
-        fruitRow = Math.floor(Math.random() * 8)
-        fruitCol = Math.floor(Math.random() * 8)
         if (document.getElementById("" + fruitRow + "c" + fruitCol +"").className == "cell") {
             if (fruitNeeded == 2) {
                 playGrid[fruitRow][fruitCol] = 1 
@@ -69,7 +64,7 @@ function setFruit(gMode) {
             <img src="mushroom.png" id="fruit">'
         }
         if (fruitNeeded != 0) {
-            setFruit(gMode)
+            setFruit()
         }
     }
 }
@@ -107,7 +102,7 @@ function startGame() {
     if (gameState == 0) {
         gameState = 1
         document.getElementById("gameInfo").innerText = ""
-        setFruit(gMode)
+        setFruit()
         moveTo()
     }  
 }
@@ -116,43 +111,25 @@ function moveTo() {
     if (direction === "ArrowRight") {
         headOrientation = "ArrowRight"
         ++posHeadCol
-        if (checkCollision()) {
-            gameLost()
-            return
-        }
-        document.getElementById("" + posHeadRow +"c"+ posHeadCol).setAttribute("class", "activeCell")
-        snake.unshift("" + posHeadRow +"c"+ posHeadCol)
     }
     if (direction === "ArrowLeft") {
         headOrientation = "ArrowLeft"
         --posHeadCol
-        if (checkCollision()) {
-            gameLost()
-            return
-        }
-        document.getElementById("" + posHeadRow +"c"+ posHeadCol).setAttribute("class", "activeCell")
-        snake.unshift("" + posHeadRow +"c"+ posHeadCol)
     }
     if (direction === "ArrowUp") {
         headOrientation = "ArrowUp"
         --posHeadRow
-        if (checkCollision()) {
-            gameLost()
-            return
-        }
-        document.getElementById("" + posHeadRow +"c"+ posHeadCol).setAttribute("class", "activeCell")
-        snake.unshift("" + posHeadRow +"c"+ posHeadCol)
     }
     if (direction === "ArrowDown") {
         headOrientation = "ArrowDown"
         ++posHeadRow
-        if (checkCollision()) {
-            gameLost()
-            return
-        }
-        document.getElementById("" + posHeadRow +"c"+ posHeadCol).setAttribute("class", "activeCell")
-        snake.unshift("" + posHeadRow +"c"+ posHeadCol)
     }
+    if (checkCollision()) {
+        gameLost()
+        return
+    }
+    document.getElementById("" + posHeadRow +"c"+ posHeadCol).setAttribute("class", "activeCell")
+    snake.unshift("" + posHeadRow +"c"+ posHeadCol)
     if (!ateFruit()) {
         document.getElementById(snake[snake.length - 1]).setAttribute("class", "cell")
         snake.pop()
@@ -173,6 +150,12 @@ function checkCollision() {
     if (snake.includes("" + posHeadRow +"c"+ posHeadCol)) {
         return true
     }
+    if (playGrid[posHeadRow][posHeadCol] == 2) {
+        document.getElementById("" + posBadshr[0] +"c"+ posBadshr[1]).setAttribute("class", "cell")
+        document.getElementById("" + posBadshr[0] +"c"+ posBadshr[1]).innerHTML = '\
+        <img src="mushroomBad.png" id="fruit">'
+        return true
+    }
     return false
 }
 
@@ -182,16 +165,10 @@ function ateFruit() {
         document.getElementById("" + posHeadRow +"c"+ posHeadCol).innerHTML = ""
         fruitNeeded = 2
         clearBadshroom()
-        setFruit(gMode)
+        setFruit()
         increaseSpeed()
         updateScore()
         return true
-    }
-    if (playGrid[posHeadRow][posHeadCol] == 2) {
-        document.getElementById("" + posBadshr[0] +"c"+ posBadshr[1]).setAttribute("class", "cell")
-        document.getElementById("" + posBadshr[0] +"c"+ posBadshr[1]).innerHTML = '\
-        <img src="mushroomBad.png" id="fruit">'
-        gameLost()
     }
     return false
 }
@@ -228,17 +205,17 @@ function gameLost() {
     setTimeout(displayReset, 2000)
 }
 
-function gameReset() {
-    if (gameState == 3) {
-    window.location.reload()
-    }
-}
-
 function displayReset() {
     gameState = 3
     document.getElementById("gameInfo").setAttribute("class", "tryAgain")
     document.getElementById("gameInfo").innerText = "Press Space to try again"
     blinkColor()
+}
+
+function gameReset() {
+    if (gameState == 3) {
+    window.location.reload()
+    }
 }
 
 function blinkColor() {
@@ -259,32 +236,26 @@ function blinkColor() {
     }
 }
 
-function setGmode1() {
+function setGmode(mode) {
     if (gameState > 0 && gameState < 4) {
         return
     }
-    document.getElementById("modeInfo").innerHTML = '\
-    <p>Classic Snake we all know and love.</p>\
-    <p>Just eat the mushrooms <img src="mushroom.png" id="fruit"> and grow as big as you can.</p>\
-    <p>Use the Arrow keys to control Snake</p>'
-    gMode = 1
-    gameState = 0
-    document.getElementById("gameInfo").setAttribute("class", "gameStart")
-    document.getElementById("gameInfo").innerText = "Press Enter to start"
-}
-
-function setGmode2() {
-    if (gameState > 0 && gameState < 4) {
-        return
+    if (mode == "gM1") {
+        document.getElementById("modeInfo").innerHTML = '\
+        <p>Classic Snake we all know and love.</p>\
+        <p>Just eat the mushrooms <img src="mushroom.png" id="fruit"> and grow as big as you can.</p>\
+        <p>Use the Arrow keys to control Snake</p>'
+        gMode = 1
+    } else {
+        document.getElementById("modeInfo").innerHTML = '\
+        <p>Classic Snake with a twist.</p>\
+        <p>You now have 2 mushrooms on the board</p>\
+        <p>one of them will feed you <img src="mushroom.png" id="fruit"> , the other kill you <img src="mushroomBad.png" id="fruit"></p>\
+        <p>Which is which ?</p>\
+        <p>Eat them to find out :) </p>\
+        <p>Use the Arrow keys to control Snake</p>'
+        gMode = 2
     }
-    document.getElementById("modeInfo").innerHTML = '\
-    <p>Classic Snake with a twist.</p>\
-    <p>You now have 2 mushrooms on the board</p>\
-    <p>one of them will feed you <img src="mushroom.png" id="fruit"> , the other kill you <img src="mushroomBad.png" id="fruit"></p>\
-    <p>Which is which ?</p>\
-    <p>Eat them to find out :) </p>\
-    <p>Use the Arrow keys to control Snake</p>'
-    gMode = 2
     gameState = 0
     document.getElementById("gameInfo").setAttribute("class", "gameStart")
     document.getElementById("gameInfo").innerText = "Press Enter to start"

@@ -5,10 +5,7 @@
     padding: 5px;
     grid-template-columns: repeat(15, 20px);
     grid-template-rows: 40px repeat(15, 20px);
-    ;
     align-content: center;
-    row-gap: 0px;
-    column-gap:0px;
     border-style: solid;
     border-color: black;
     border-radius: 5px;
@@ -47,6 +44,29 @@
     margin-left: 27px;
 }
 
+.chooseMode {
+    font-Style: normal;
+    font-Size: 21px;
+    margin-left: 12px;
+    margin-top: 6px;
+}
+
+.gameStart {
+    font-Style: normal;
+    font-Size: 22px;
+    margin-left: 12px;
+    margin-top: 5px;
+}
+
+.cell {
+    background-color: rgb(220, 220, 220);
+}
+
+.activeCell {
+    background-color: rgb(107, 164, 50);
+    border-style: groove;
+}
+
 .gameLost {
     font-Style: normal;
     font-Size : 27px;
@@ -61,47 +81,15 @@
     margin-top: 7px;
 }
 
-.gameStart {
-    font-Style: normal;
-    font-Size: 22px;
-    margin-left: 12px;
-    margin-top: 5px;
-}
-
-.chooseMode {
-    font-Style: normal;
-    font-Size: 21px;
-    margin-left: 12px;
-    margin-top: 6px;
-}
-
-.cell {
-    background-color:  rgb(220, 220, 220);
-}
-
-.activeCell {
-    background-color: rgb(107, 164, 50);
-    border-style: groove;
-}
-
 .gameMode {
-    display: flex;
-    flex-direction: row;
-    justify-content: flex-start;
-    align-items: center;
-    flex-wrap: wrap;
     margin-left: 112px;
 }
 
-.gMode1 {
+.gMode {
     margin-top: 2px;
     margin-left: 5px;
 }
 
-.gMode2 {
-    margin-top: 2px;
-    margin-left: 5px;
-}
 
 p {
     margin-left: 50px;
